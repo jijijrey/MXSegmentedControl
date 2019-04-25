@@ -114,6 +114,9 @@ import UIKit
         didSet { layoutIndicator() }
     }
     
+    /// Callback when selecting a segment index
+    public var didSelectIndex: ((Int) -> Void)?
+    
     /// The currently selected segment index.
     public private(set) var selectedIndex: Int = 0 {
         willSet { contentView.segments[selectedIndex].isSelected = false }
@@ -471,6 +474,10 @@ extension MXSegmentedControl {
             var contentOffset = scrollView.contentOffset
             contentOffset.x = CGFloat(index) * scrollView.frame.size.width
             scrollView.setContentOffset(contentOffset, animated: animated)
+        }
+        
+        if let handler = didSelectIndex {
+            handler(index)
         }
     }
     
